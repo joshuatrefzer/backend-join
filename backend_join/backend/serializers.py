@@ -1,23 +1,28 @@
 from rest_framework import serializers
-from .models import Task, Contact, Subtask
+from .models import Task, Contact
 
 
 
-class SubtaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subtask
-        fields = '__all__'
 
-
+   
 class TaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Task
-        fields = '__all__'
+        class Meta:
+            model = Task
+            fields = '__all__'
+
         def create(self, validated_data):
-            subtasks_data = validated_data.pop('subtasks')
+            # Wenn Subtasks in den validierten Daten vorhanden sind, extrahiere sie
+            subtasks_data = validated_data.pop('subtasks', [])
+            
+            # Erstelle den Task
             task = Task.objects.create(**validated_data)
+            
+            # Erstelle die zugehörigen Subtasks
             for subtask_data in subtasks_data:
-                Subtask.objects.create(task=task, **subtask_data)
+                # Hier gehst du davon aus, dass Subtasks im JSON-Format sind
+                # Wenn die Datenstruktur variiert, passe dies entsprechend an
+                task.subtasks.append(subtask_data)
+
             return task
         
         

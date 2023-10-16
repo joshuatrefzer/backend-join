@@ -11,13 +11,6 @@ class Contact(models.Model):
         return self.first_name
 
 
-class Subtask(models.Model):
-    title = models.CharField(max_length=100, default=True)
-    done = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.title
-
 
 class Task(models.Model):
     title = models.CharField(max_length=100)
@@ -26,7 +19,7 @@ class Task(models.Model):
     date = models.DateField()
     prio = models.CharField(max_length=10)
     category = models.CharField(max_length=20)
-    subtasks = models.ManyToManyField('Subtask', blank=True)
+    subtasks = models.JSONField(default=list)
 
     def __str__(self):
         return self.title
