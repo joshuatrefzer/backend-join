@@ -1,30 +1,36 @@
 from rest_framework import serializers
-from .models import Task, Contact
+from .models import Subtask, Task, Contact
 
 
-
+class SubtaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subtask
+        fields = '__all__'
 
    
 class TaskSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Task
-            fields = '__all__'
+    assigned_to = serializers.PrimaryKeyRelatedField(many=True, queryset=Contact.objects.all())  # Many-to-Many-Beziehung zu Contacts
+    subtasks = serializers.PrimaryKeyRelatedField(many=True, queryset=Subtask.objects.all())  # Many-to-Many-Beziehung zu Subtasks
 
-        def create(self, validated_data):
-            # Wenn Subtasks in den validierten Daten vorhanden sind, extrahiere sie
-            subtasks_data = validated_data.pop('subtasks', [])
-            
-            # Erstelle den Task
-            task = Task.objects.create(**validated_data)
-            
-            # Erstelle die zugehörigen Subtasks
-            for subtask_data in subtasks_data:
-                # Hier gehst du davon aus, dass Subtasks im JSON-Format sind
-                # Wenn die Datenstruktur variiert, passe dies entsprechend an
-                task.subtasks.append(subtask_data)
+    class Meta:
+        model = Task
+        fields = '__all__'
 
-            return task
-        
+    def create(self, validated_data):
+        assigned_to_data = validated_data.pop('assigned_to', [])
+        subtasks_data = validated_data.pop('subtasks', [])
+
+        task = Task.objects.create(**validated_data)
+
+        for contact in assigned_to_data:
+            task.assigned_to.add(contact)
+
+        for subtask in subtasks_data:
+            task.subtasks.add(subtask)
+
+        return task
+    
+    
         
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
