@@ -14,6 +14,7 @@ class Contact(models.Model):
 class Subtask(models.Model):
     title = models.CharField(max_length=20)
     done = models.BooleanField(default=False)
+    # task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="subtasks")
 
     def __str__(self):
         return self.title
@@ -27,6 +28,7 @@ class Task(models.Model):
     prio = models.CharField(max_length=10)
     category = models.CharField(max_length=20)
     subtasks = models.ManyToManyField(Subtask, blank=True)
+    status = models.CharField(max_length=20, default='todo') 
 
     def __str__(self):
         return self.title
