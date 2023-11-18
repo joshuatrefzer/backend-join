@@ -1,5 +1,11 @@
 from django.db import models
 
+class Priority(models.TextChoices):
+    URGENT = 'urgent', 'Dringend'
+    MEDIUM = 'medium', 'Medium'
+    LOW = 'low', 'Niedrig'
+
+
 # Create your models here.
 class Contact(models.Model):
     first_name = models.CharField(max_length=30, default='default_value')
@@ -19,13 +25,12 @@ class Subtask(models.Model):
     def __str__(self):
         return self.title
 
-
 class Task(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=100, blank=True)
     assigned_to = models.ManyToManyField(Contact, blank=True) 
     date = models.DateField()
-    prio = models.CharField(max_length=10)
+    prio = models.CharField(max_length=10, choices=Priority.choices, default=Priority.MEDIUM)
     category = models.CharField(max_length=20)
     subtasks = models.ManyToManyField(Subtask, blank=True)
     status = models.CharField(max_length=20, default='todo') 
