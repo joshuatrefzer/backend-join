@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from .models import Subtask, Task, Contact
 from .serializers import SubtaskSerializer, TaskSerializer , ContactSerializer, UserSerializer
 from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import ValidationError
 
 
 @api_view(['POST'])
@@ -23,6 +24,18 @@ def login(request):
     return Response({"token": token.key, "user": serializer.data})
 
 
+# @api_view(['POST'])
+# def signup(request):
+#     serializer = UserSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         user = User.objects.get(username=request.data['username'])
+#         user.set_password(request.data['password'])
+#         user.save()
+#         token = Token.objects.create(user=user)
+#         return Response({"token": token.key, "user": serializer.data})
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['POST'])
 def signup(request):
     serializer = UserSerializer(data=request.data)
@@ -33,7 +46,13 @@ def signup(request):
         user.save()
         token = Token.objects.create(user=user)
         return Response({"token": token.key, "user": serializer.data})
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        # Check if the error is due to a duplicate username
+        if 'username' in serializer.errors and 'unique' in serializer.errors['username']:
+            raise ValidationError("A user with that username already exists.")
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET'])
@@ -44,23 +63,24 @@ def test_token(request):
 
 
 class TaskViewSet(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
+
 class SubtaskViewSet(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     queryset = Subtask.objects.all()
     serializer_class = SubtaskSerializer
 
 
 class ContactViewSet(viewsets.ModelViewSet):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer

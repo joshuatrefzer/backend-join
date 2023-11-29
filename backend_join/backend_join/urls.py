@@ -23,9 +23,9 @@ from backend.views import SubtaskViewSet, TaskViewSet, ContactViewSet, login, si
 
 
 router = DefaultRouter()
-router.register(r'tasks', TaskViewSet)
-router.register(r'contacts', ContactViewSet)
-router.register(r'subtasks', SubtaskViewSet)
+router.register(r'tasks', TaskViewSet, basename='tasks')
+router.register(r'contacts', ContactViewSet ,basename='contacts')
+router.register(r'subtasks', SubtaskViewSet ,basename='subtasks')
 
 urlpatterns = [
     re_path('login', login),
