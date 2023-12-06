@@ -1,9 +1,9 @@
 from django.db import models
 
 class Priority(models.TextChoices):
-    URGENT = 'urgent', 'Dringend'
-    MEDIUM = 'medium', 'Medium'
-    LOW = 'low', 'Niedrig'
+    URGENT = 'urgent', 'urgent'
+    MEDIUM = 'medium', 'medium'
+    LOW = 'low', 'low'
 
 
 # Create your models here.
