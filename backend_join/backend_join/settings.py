@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+
+dotenv_path = os.path.join(os.path.dirname(__file__), 'dotenv', '.env')
+load_dotenv(dotenv_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +34,9 @@ DEBUG = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200'
 ]
+
+CLIENT_BASE_URL = 'http://localhost:4200'
+HOST_BASE_URL = 'https://joshuatrefzer.pythonanywhere.com'
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -49,6 +58,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_rest_passwordreset',
     'backend_join', 
     'backend',
 ]
@@ -63,6 +73,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.getenv("DEVMAIL")
+EMAIL_HOST_USER = os.getenv("DEVMAIL")
+EMAIL_HOST_PASSWORD = os.getenv("DEVPW")
+
 
 ROOT_URLCONF = 'backend_join.urls'
 

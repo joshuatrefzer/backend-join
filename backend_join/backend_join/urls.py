@@ -31,6 +31,7 @@ urlpatterns = [
     re_path('login', login),
     re_path('signup', signup),
     re_path('test_token', test_token),
+    path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),

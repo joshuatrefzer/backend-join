@@ -24,17 +24,6 @@ def login(request):
     return Response({"token": token.key, "user": serializer.data})
 
 
-# @api_view(['POST'])
-# def signup(request):
-#     serializer = UserSerializer(data=request.data)
-#     if serializer.is_valid():
-#         serializer.save()
-#         user = User.objects.get(username=request.data['username'])
-#         user.set_password(request.data['password'])
-#         user.save()
-#         token = Token.objects.create(user=user)
-#         return Response({"token": token.key, "user": serializer.data})
-#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def signup(request):
@@ -47,7 +36,6 @@ def signup(request):
         token = Token.objects.create(user=user)
         return Response({"token": token.key, "user": serializer.data})
     else:
-        # Check if the error is due to a duplicate username
         if 'username' in serializer.errors and 'unique' in serializer.errors['username']:
             raise ValidationError("A user with that username already exists.")
         else:
