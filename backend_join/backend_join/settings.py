@@ -32,10 +32,11 @@ SECRET_KEY = 'django-insecure-oc1%y2&ui+pf1v1=)q@o6s4**5qc3_8ov=plodulatavnp#&=+
 DEBUG = True
 #CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:4200'
+    'http://localhost:4200',
+    'https://join/joshuatrefzer.de'
 ]
 
-CLIENT_BASE_URL = 'http://localhost:4200'
+CLIENT_BASE_URL =  'https://join/joshuatrefzer.de' #'http://localhost:4200'
 HOST_BASE_URL = 'https://joshuatrefzer.pythonanywhere.com'
 
 ALLOWED_HOSTS = [
@@ -43,7 +44,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'http://localhost:4200',
     'http://127.0.0.1:4200',
-    'joshuatrefzer.pythonanywhere.com'
+    'joshuatrefzer.pythonanywhere.com',
+    CLIENT_BASE_URL
 ]
 
 
