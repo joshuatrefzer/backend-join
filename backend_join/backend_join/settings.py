@@ -33,10 +33,10 @@ DEBUG = True
 #CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
-    'https://join/joshuatrefzer.de'
+    'https://join.joshuatrefzer.de'
 ]
 
-CLIENT_BASE_URL =  'https://join/joshuatrefzer.de' #'http://localhost:4200'
+CLIENT_BASE_URL =  'https://join.joshuatrefzer.de' #'http://localhost:4200'
 HOST_BASE_URL = 'https://joshuatrefzer.pythonanywhere.com'
 
 ALLOWED_HOSTS = [
